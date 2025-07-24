@@ -6,6 +6,8 @@ from langgraph.graph import END, StateGraph, START
 from langgraph.prebuilt import ToolNode, tools_condition
 
 from tradingagents.agents import *
+from tradingagents.agents.delivery.delivery_manager import create_delivery_manager
+from tradingagents.agents.delivery.document_manager import create_document_manager
 from tradingagents.agents.delivery.pre_sale import create_pre_sale
 
 from tradingagents.agents.delivery.project_manager import create_project_manager
@@ -58,12 +60,20 @@ class GraphSetup:
         solution_architect_node = create_solution_architect(
             self.quick_thinking_llm, self.toolkit
         )
-        
+
         project_manager_node = create_project_manager(
             self.quick_thinking_llm, self.toolkit
         )
-        
+
         sale_node = create_sale(
+            self.quick_thinking_llm, self.toolkit
+        )
+
+        document_manager_node = create_document_manager(
+            self.quick_thinking_llm, self.toolkit
+        )
+
+        delivery_manager_node = create_delivery_manager(
             self.quick_thinking_llm, self.toolkit
         )
 
@@ -76,7 +86,9 @@ class GraphSetup:
         workflow.add_node("Solution-Architect", solution_architect_node)
         workflow.add_node("Project-Manager", project_manager_node)
         workflow.add_node("Sale", sale_node)
-        
+        workflow.add_node("Document-Manager", document_manager_node)
+        workflow.add_node("Delivery-Manager", delivery_manager_node)
+
         workflow.add_node("create_project_folder", create_project_folder)
         workflow.add_conditional_edges(
             "Pre-Sale",
@@ -89,8 +101,16 @@ class GraphSetup:
         workflow.add_edge("create_project_folder", "Pre-Sale")
         workflow.add_edge("Solution-Architect", "Project-Manager")
         workflow.add_edge("Project-Manager", "Sale")
-        
-        workflow.add_edge("Sale", END)
+        workflow.add_edge("Sale", "Document-Manager")
+        workflow.add_edge("Document-Manager", "Delivery-Manager")
+        workflow.add_conditional_edges(
+            "Delivery-Manager",
+            self.conditional_logic.should_continue_delivery_manager,
+            {
+                "Solution-Architect": "Solution-Architect",
+                "END": END
+            }
+        )
 
         # Define edges
 

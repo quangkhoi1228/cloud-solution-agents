@@ -25,4 +25,8 @@ class CloudSolutionAgentState(MessagesState):
     ask_user_question: Annotated[str, "Ask user question"]
     solution_architect_report: Annotated[str, "Solution architect report"]      
     project_manager_report: Annotated[str, "Project manager report"]
+    sale_report: Annotated[str, "Sale report"]
+    delivery_manager_report: Annotated[str, "Delivery manager report"]
+    final_proposal: Annotated[str, "Final proposal"]
+    final_acceptance: Annotated[bool, "Final acceptance"]
 

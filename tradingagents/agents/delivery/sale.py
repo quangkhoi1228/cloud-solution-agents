@@ -15,7 +15,7 @@ pricing = """
 | RAM                    | 130.000 / GB / tháng             |
 | SSD                    | 3.000 / GB / tháng               |
 | Public IP              | 15.000 / IP / tháng             |
-| Object Storage         | 25.000 / GB / tháng             |
+| Object Storage         | 2.500 / GB / tháng             |
 | Firewall & VPC         | 100.000 / cấu hình (1 lần)       |
 | Snapshot VM            | 150.000 / tháng                  |
 | Monitoring & Logging   | 2.000.000 / tháng                  |
@@ -23,14 +23,14 @@ pricing = """
 
 def create_sale(llm, toolkit):
     def sale_node(state):
-
-        # if state["solution_architect_report"]:
-        #     create_file(
-        #         f"{state['folder_path']}/solution_architect_report.md", state["solution_architect_report"])
-        #     return {
-        #         "messages": [AIMessage(content="Đã có thông tin giải pháp đề xuất từ khách hàng")],
-        #         "solution_architect_report": state["solution_architect_report"],
-        #     }
+        
+        if "sale_report" in state and state["sale_report"]:
+            create_file(
+                f"{state['folder_path']}/sale_report.md", state["sale_report"])
+            return {
+                "messages": [],
+                "sale_report": state["sale_report"],
+            }
             
         tools = [
             # toolkit.create_project_folder,
@@ -98,8 +98,8 @@ _Lưu ý:_
         chain = prompt | llm.bind_tools(tools)
         result = chain.invoke(state["messages"])
 
-        print("state sale: ", state)
         print("result: ", result.pretty_print())
+        print("state sale: ", state)
         report = ""
 
         if len(result.tool_calls) == 0:

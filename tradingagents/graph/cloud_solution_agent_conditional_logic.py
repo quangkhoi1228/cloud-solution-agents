@@ -25,3 +25,11 @@ class CloudSolutionAgentConditionalLogic:
         if last_message.tool_calls:
             return "tools_solution_architect"
         return "Solution-Architect"
+    
+    def should_continue_delivery_manager(self, state: CloudSolutionAgentState):
+        """Determine if pre-sale should continue."""
+        messages = state["messages"]
+        last_message = messages[-1]
+        if 'final_acceptance' in state and state['final_acceptance']:
+            return "END"
+        return "Delivery-Manager"

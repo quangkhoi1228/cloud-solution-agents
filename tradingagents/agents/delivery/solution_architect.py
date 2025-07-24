@@ -16,7 +16,7 @@ def create_solution_architect(llm, toolkit):
             create_file(
                 f"{state['folder_path']}/solution_architect_report.md", state["solution_architect_report"])
             return {
-                "messages": [AIMessage(content="Đã có thông tin giải pháp đề xuất cho khách hàng")],
+                "messages": [],
                 "solution_architect_report": state["solution_architect_report"],
             }
             
@@ -48,18 +48,19 @@ YÊU CẦU
     
 VÍ DỤ CỤ THỂ:
 - yêu cầu của KH: 
-    # Yêu cầu hạ tầng từ khách hàng:
-    - Hệ thống cần migrate từ on‑premise lên FPT Smart Cloud.
-    - Gồm 1 website cá nhân dùng NestJS và 1 database PostgreSQL, chạy chung trên 1 VM.
-    - VM yêu cầu cấu hình: 4 vCPU, 8 GB RAM, 500 GB SSD, có public IP.
-    - Dung lượng dữ liệu hiện tại là khoảng 1 TB.
+    # Yêu cầu
+    Khách hàng cần di chuyển hệ thống hiện tại từ hạ tầng on‑premise lên FPT Smart Cloud. Hệ thống bao gồm một website cá nhân sử dụng NestJS và một cơ sở dữ liệu PostgreSQL, hiện đang chạy chung trên một máy ảo (VM). Việc chuyển đổi cần đảm bảo duy trì cấu hình tương đương, có IP công cộng. Có Monitoring và logging.
 
-    # Các thông tin đầu vào hiện có:
-    - Kiến trúc hệ thống: Web + Database chạy trên cùng VM.
-    - Hạ tầng VM on‑premise: 4 vCPU / 8 GB RAM / 500 GB SSD.
-    - Network: Có public IP gán sẵn.
-    - Dung lượng dữ liệu: Khoảng 1 TB.
-    - Use-case chủ yếu: Migration sang môi trường cloud của FPT Smart Cloud.
+    # Yêu cầu chi tiết từ khách hàng:
+    | Hạng mục                 | Thông tin yêu cầu                                                                   |
+    | ------------------------ | ----------------------------------------------------------------------------------- |
+    | **Hình thức triển khai** | Migration từ on‑premise lên FPT Smart Cloud                                         |
+    | **Thành phần hệ thống**  | Website (NestJS) + Database (PostgreSQL) (chạy trên cùng 1 VM)                     |
+    | **Cấu hình VM yêu cầu**  | 16 vCPU, 32 GB RAM, 1 TB SSD                                                       |
+    | **Mạng và truy cập**     | Có public IP; không cần firewall                                                    |
+    | **Backup dữ liệu**       | **Yêu cầu backup**                                                      |
+    | **Monitoring/Logging**   | **Yêu cầu**                                                                   |
+    | **Dung lượng dữ liệu**   | Khoảng **1 TB** hiện tại                                                            |
     
 - Thì output report sẽ bao gồm tiêu đề và nội dung sau:
 
@@ -105,7 +106,7 @@ VÍ DỤ CỤ THỂ:
     | **1. Khảo sát & Phân tích hệ thống** | Đánh giá hệ thống hiện tại, tài nguyên VM, dữ liệu cần migrate           |
     | **2. Chuẩn bị Hạ tầng Cloud**        | Tạo VM trên FPT Cloud với cấu hình tương đương, thiết lập mạng, firewall  |
     | **3. Di chuyển Dữ liệu & Ứng dụng**  | Backup + chuyển dữ liệu (SCP/Object Storage), cài app, khôi phục DB      |
-    | **4. Kiểm thử, Go-live & Giám sát**  | Kiểm tra toàn hệ thống, chuyển DNS, thiết lập giám sát & backup định kỳ  |
+    | **4. Kiểm thử, Go-live**  | Kiểm tra toàn hệ thống, chuyển DNS, thiết lập giám sát & backup định kỳ  |
     
 
 ## Danh sách sản phẩm sử dụng (BOM)
@@ -125,7 +126,8 @@ VÍ DỤ CỤ THỂ:
 # Important:
 - Output hoàn toàn là tiếng Việt
 - Không đưa các thông tin ngoài vào như giới thiệu
-- Chỉ có chart mermaid"""
+- Chỉ có chart mermaid
+- Nếu KH không yêu cầu dịch vụ thì không đưa vào bảng BOM"""
 
         prompt = ChatPromptTemplate.from_messages(
             [

@@ -17,7 +17,7 @@ def create_pre_sale(llm, toolkit):
             create_file(
                 f"{state['folder_path']}/user_requirements.md", state["user_requirements"])
             return {
-                "messages": [AIMessage(content="Đã có thông tin yêu cầu từ khách hàng")],
+                "messages": [],
                 "user_requirements": state["user_requirements"],
                 "next": "Solution-Architect"
             }
@@ -55,21 +55,20 @@ Sau khi trả summary, dừng luôn — **không hỏi thêm, không tư vấn s
 
 KHI ĐỦ THÔNG TIN → TRẢ VỀ MỘT ĐOẠN summary là SUMMARY PLAIN‑TEXT như sau:
 
-# Yêu cầu hạ tầng từ khách hàng:
-- Hệ thống cần migrate từ on‑premise lên FPT Smart Cloud.
-- Gồm 1 website và 1 database, chạy chung trên 1 VM.
-- VM yêu cầu cấu hình: 4 vCPU, 16 GB RAM, 512 GB SSD, có public IP, có domain đã đăng ký.
-- Yêu cầu backup dữ liệu: có
-- Yêu cầu monitoring, logging: không
+# Yêu cầu:
+Khách hàng cần di chuyển hệ thống hiện tại từ hạ tầng on‑premise lên FPT Smart Cloud. Hệ thống bao gồm một website và một cơ sở dữ liệu, hiện đang chạy chung trên một máy ảo (VM). Việc chuyển đổi cần đảm bảo duy trì cấu hình tương đương, có IP công cộng, domain riêng đã đăng ký, đồng thời đáp ứng yêu cầu backup dữ liệu. Monitoring và logging không nằm trong phạm vi yêu cầu lần này.
 
-# Các thông tin đầu vào hiện có:
-- Kiến trúc hệ thống: Web + Database chạy trên cùng VM hiện tại.
-- Hạ tầng VM on‑premise: 4 vCPU / 16 GB RAM / 512 GB SSD.
-- Network: Có public IP gán sẵn, kèm domain hoạt động.
-- Dung lượng dữ liệu hiện tại: khoảng 1 TB.
-- Yêu cầu backup dữ liệu: có
-- Yêu cầu monitoring, logging: không
-- Use-case chủ yếu: Migration sang môi trường cloud của FPT Smart Cloud.
+# Yêu cầu chi tiết từ khách hàng:
+| Hạng mục                 | Thông tin yêu cầu                                                                   |
+| ------------------------ | ----------------------------------------------------------------------------------- |
+| **Hình thức triển khai** | Migration từ on‑premise lên FPT Smart Cloud                                         |
+| **Thành phần hệ thống**  | Website + Database (chạy trên cùng 1 VM)                                            |
+| **Cấu hình VM yêu cầu**  | 4 vCPU, 16 GB RAM, 512 GB SSD                                                       |
+| **Mạng và truy cập**     | Có public IP; sử dụng domain riêng đã đăng ký                                       |
+| **Backup dữ liệu**       | **Có yêu cầu backup**                                                               |
+| **Monitoring/Logging**   | **Không yêu cầu**                                                                   |
+| **Dung lượng dữ liệu**   | Khoảng **1 TB** hiện tại (dùng để ước tính dung lượng backup hoặc lưu trữ dự phòng) |
+
             """
 
         prompt = ChatPromptTemplate.from_messages(

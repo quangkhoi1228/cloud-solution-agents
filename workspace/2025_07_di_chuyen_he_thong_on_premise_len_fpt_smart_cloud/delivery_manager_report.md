@@ -1,0 +1,1 @@
+Giải pháp đề xuất phù hợp với yêu cầu của khách hàng và đã đầy đủ các thông tin cần thiết.

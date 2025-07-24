@@ -16,7 +16,7 @@ def create_project_manager(llm, toolkit):
             create_file(
                 f"{state['folder_path']}/project_manager_report.md", state["project_manager_report"])
             return {
-                "messages": [AIMessage(content="Đã có thông tin kế hoạch triển khai cho khách hàng")],
+                "messages": [],
                 "project_manager_report": state["project_manager_report"],
             }
 

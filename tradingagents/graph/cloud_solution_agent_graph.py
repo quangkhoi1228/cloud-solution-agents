@@ -214,6 +214,11 @@ class CloudSolutionAgentsGraph:
             # "current_user_question": final_state["current_user_question"] if "current_user_question" in final_state else 0,
             "user_requirements": final_state["user_requirements"] if "user_requirements" in final_state else "",
             "folder_path": final_state["folder_path"] if "folder_path" in final_state else "",
+            "solution_architect_report": final_state["solution_architect_report"] if "solution_architect_report" in final_state else "",
+            "project_manager_report": final_state["project_manager_report"] if "project_manager_report" in final_state else "",
+            "sale_report": final_state["sale_report"] if "sale_report" in final_state else "",
+            "final_proposal": final_state["final_proposal"] if "final_proposal" in final_state else "",
+            "delivery_manager_report": final_state["delivery_manager_report"] if "delivery_manager_report" in final_state else "",
             "messages": encoded_messages,
              # "pre_sale_report": final_state["pre_sale_report"],
         }
