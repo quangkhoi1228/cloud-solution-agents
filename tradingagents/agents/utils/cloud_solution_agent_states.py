@@ -23,5 +23,6 @@ class CloudSolutionAgentState(MessagesState):
     folder_path: Annotated[str, "Folder path"]
     interupt: Annotated[bool, "Interupt"]
     ask_user_question: Annotated[str, "Ask user question"]
-    solution_architect_report: Annotated[str, "Solution architect report"]
+    solution_architect_report: Annotated[str, "Solution architect report"]      
+    project_manager_report: Annotated[str, "Project manager report"]
 

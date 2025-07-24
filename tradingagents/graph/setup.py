@@ -8,6 +8,8 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from tradingagents.agents import *
 from tradingagents.agents.delivery.pre_sale import create_pre_sale
 
+from tradingagents.agents.delivery.project_manager import create_project_manager
+from tradingagents.agents.delivery.sale import create_sale
 from tradingagents.agents.delivery.solution_architect import create_solution_architect
 from tradingagents.agents.utils.agent_utils import Toolkit
 from tradingagents.agents.utils.cloud_solution_agent_states import CloudSolutionAgentState
@@ -56,6 +58,14 @@ class GraphSetup:
         solution_architect_node = create_solution_architect(
             self.quick_thinking_llm, self.toolkit
         )
+        
+        project_manager_node = create_project_manager(
+            self.quick_thinking_llm, self.toolkit
+        )
+        
+        sale_node = create_sale(
+            self.quick_thinking_llm, self.toolkit
+        )
 
         # Create workflow
         workflow = StateGraph(CloudSolutionAgentState)
@@ -63,8 +73,11 @@ class GraphSetup:
         # Add analyst nodes to the graph
         workflow.add_edge(START, "Pre-Sale")
         workflow.add_node("Pre-Sale", pre_sale_node)
-        workflow.add_node("create_project_folder", create_project_folder)
         workflow.add_node("Solution-Architect", solution_architect_node)
+        workflow.add_node("Project-Manager", project_manager_node)
+        workflow.add_node("Sale", sale_node)
+        
+        workflow.add_node("create_project_folder", create_project_folder)
         workflow.add_conditional_edges(
             "Pre-Sale",
             self.conditional_logic.should_continue_pre_sale,
@@ -74,7 +87,10 @@ class GraphSetup:
             }
         )
         workflow.add_edge("create_project_folder", "Pre-Sale")
-        workflow.add_edge("Solution-Architect", END)
+        workflow.add_edge("Solution-Architect", "Project-Manager")
+        workflow.add_edge("Project-Manager", "Sale")
+        
+        workflow.add_edge("Sale", END)
 
         # Define edges
 
