@@ -13,21 +13,22 @@ from langchain_openai import ChatOpenAI
 import tradingagents.dataflows.interface as interface
 from tradingagents.default_config import DEFAULT_CONFIG
 from langchain_core.messages import HumanMessage
+from langgraph.types import Command, interrupt
 
 
 def create_msg_delete():
     def delete_messages(state):
         """Clear messages and add placeholder for Anthropic compatibility"""
         messages = state["messages"]
-        
+
         # Remove all messages
         removal_operations = [RemoveMessage(id=m.id) for m in messages]
-        
+
         # Add a minimal placeholder message
         placeholder = HumanMessage(content="Continue")
-        
+
         return {"messages": removal_operations + [placeholder]}
-    
+
     return delete_messages
 
 
@@ -60,7 +61,7 @@ class Toolkit:
         Returns:
             str: A formatted dataframe containing the latest global news from Reddit in the specified time frame.
         """
-        
+
         global_news_result = interface.get_reddit_global_news(curr_date, 7, 5)
 
         return global_news_result
@@ -115,7 +116,8 @@ class Toolkit:
             str: A formatted dataframe containing the latest news about the company on the given date
         """
 
-        stock_news_results = interface.get_reddit_company_news(ticker, curr_date, 7, 5)
+        stock_news_results = interface.get_reddit_company_news(
+            ticker, curr_date, 7, 5)
 
         return stock_news_results
 
@@ -157,7 +159,8 @@ class Toolkit:
             str: A formatted dataframe containing the stock price data for the specified ticker symbol in the specified date range.
         """
 
-        result_data = interface.get_YFin_data_online(symbol, start_date, end_date)
+        result_data = interface.get_YFin_data_online(
+            symbol, start_date, end_date)
 
         return result_data
 
@@ -287,7 +290,8 @@ class Toolkit:
             str: a report of the company's most recent balance sheet
         """
 
-        data_balance_sheet = interface.get_simfin_balance_sheet(ticker, freq, curr_date)
+        data_balance_sheet = interface.get_simfin_balance_sheet(
+            ticker, freq, curr_date)
 
         return data_balance_sheet
 
@@ -376,7 +380,8 @@ class Toolkit:
             str: A formatted string containing the latest news about the company on the given date.
         """
 
-        openai_news_results = interface.get_stock_news_openai(ticker, curr_date)
+        openai_news_results = interface.get_stock_news_openai(
+            ticker, curr_date)
 
         return openai_news_results
 
@@ -417,3 +422,33 @@ class Toolkit:
         )
 
         return openai_fundamentals_results
+
+    @staticmethod
+    @tool
+    def get_user_info(
+        question: Annotated[str, "Question to ask user"]
+    ):
+        """
+        Request user provide more information if the requirement does not clear.
+        Args:
+            question (str): Question to ask user
+        Returns:
+            str: A formatted string containing the user requirements.
+        """
+
+        return interface.get_user_info(question)
+
+    @staticmethod
+    @tool
+    def create_project_folder(
+        state: Annotated[str, "State"]
+    ):
+        """
+        Create project folder
+        Args:
+            state (str): State
+        Returns:
+            str: A formatted string containing the project folder.
+        """
+
+        return interface.create_project_folder(state)
