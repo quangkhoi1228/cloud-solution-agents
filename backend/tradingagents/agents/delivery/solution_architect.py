@@ -49,10 +49,10 @@ YÊU CẦU
     
 VÍ DỤ CỤ THỂ:
 - yêu cầu của KH: 
-    # Yêu cầu
+    ## Yêu cầu
     Khách hàng cần di chuyển hệ thống hiện tại từ hạ tầng on‑premise lên FPT Smart Cloud. Hệ thống bao gồm một website cá nhân sử dụng NestJS và một cơ sở dữ liệu PostgreSQL, hiện đang chạy chung trên một máy ảo (VM). Việc chuyển đổi cần đảm bảo duy trì cấu hình tương đương, có IP công cộng. Có Monitoring và logging.
 
-    # Yêu cầu chi tiết từ khách hàng:
+    ## Yêu cầu chi tiết từ khách hàng:
     | Hạng mục                 | Thông tin yêu cầu                                                                   |
     | ------------------------ | ----------------------------------------------------------------------------------- |
     | **Hình thức triển khai** | Migration từ on‑premise lên FPT Smart Cloud                                         |

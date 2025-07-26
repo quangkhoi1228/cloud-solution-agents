@@ -32,6 +32,7 @@ def get_return_data(data):
         "user_requirements": data.get("user_requirements"),
         "folder_path": data.get("folder_path"),
         "final_proposal": data.get("final_proposal"),
+        "final_proposal_parts": data.get("final_proposal_parts"),
         "solution_architect_report": data.get("solution_architect_report"),
         "project_manager_report": data.get("project_manager_report"),
         "sale_report": data.get("sale_report"),

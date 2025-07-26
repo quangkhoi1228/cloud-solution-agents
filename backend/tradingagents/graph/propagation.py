@@ -1,12 +1,7 @@
 # TradingAgents/graph/propagation.py
 
 from datetime import datetime
-from typing import Dict, Any
-from tradingagents.agents.utils.agent_states import (
-    AgentState,
-    InvestDebateState,
-    RiskDebateState,
-)
+from typing import Any, Dict
 
 
 class Propagator:
@@ -39,6 +34,7 @@ class Propagator:
             "sale_report": "",
             "delivery_manager_report": "",
             "final_proposal": "",
+            "final_proposal_parts": [],
             "final_acceptance": True
         }
 

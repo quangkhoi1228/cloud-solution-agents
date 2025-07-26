@@ -55,10 +55,10 @@ Sau khi trả summary, dừng luôn — **không hỏi thêm, không tư vấn s
 
 KHI ĐỦ THÔNG TIN → TRẢ VỀ MỘT ĐOẠN summary là SUMMARY PLAIN‑TEXT như sau:
 
-# Yêu cầu:
+## Yêu cầu
 Khách hàng cần di chuyển hệ thống hiện tại từ hạ tầng on‑premise lên FPT Smart Cloud. Hệ thống bao gồm một website và một cơ sở dữ liệu, hiện đang chạy chung trên một máy ảo (VM). Việc chuyển đổi cần đảm bảo duy trì cấu hình tương đương, có IP công cộng, domain riêng đã đăng ký, đồng thời đáp ứng yêu cầu backup dữ liệu. Monitoring và logging không nằm trong phạm vi yêu cầu lần này.
 
-# Yêu cầu chi tiết từ khách hàng:
+### Yêu cầu chi tiết từ khách hàng
 | Hạng mục                 | Thông tin yêu cầu                                                                   |
 | ------------------------ | ----------------------------------------------------------------------------------- |
 | **Hình thức triển khai** | Migration từ on‑premise lên FPT Smart Cloud                                         |
