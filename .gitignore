@@ -10,3 +10,4 @@ eval_data/
 
 .venv/
 .history/
+backend/workspace/*
