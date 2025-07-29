@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { CloudSolutionStateType } from './types/cloud-solution-state-type';
+import axios from 'axios';
 
 interface Message {
   id: number;
@@ -35,12 +36,20 @@ type ActionType =
   | 'deliveryManagerHandOverEnd'
   | 'end';
 
+type FileType =
+  | 'user_requirements'
+  | 'solution_architect_report'
+  | 'project_manager_report'
+  | 'sale_report'
+  | 'final_proposal';
+
 interface AppState {
   // UI State
   showChat: boolean;
   showFileExplorer: boolean;
   activeRole: string | null;
   loadingRole: string | null;
+  files: FileType[];
   selectedFile: string;
   editorTab: 'preview' | 'raw';
   processingState: ActionType | null;
@@ -71,6 +80,8 @@ interface AppState {
   pushActionQueue: (actions: ActionType[]) => void;
   handleAction: () => void;
   addAIMessage: (action: ActionType) => void;
+  setFiles: (files: FileType[]) => void;
+  addFile: (file: FileType) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -81,8 +92,9 @@ export const useAppStore = create<AppState>()(
       showFileExplorer: true,
       activeRole: 'solution-architect',
       loadingRole: null,
-      selectedFile: 'App.tsx',
-      editorTab: 'raw',
+      files: [],
+      selectedFile: 'README.md',
+      editorTab: 'preview',
       messages: [],
       currentMessage: '',
       processingState: null,
@@ -156,15 +168,8 @@ export const useAppStore = create<AppState>()(
             name: 'You',
           });
 
-          set({ currentMessage: '' });
+          // set({ currentMessage: '' });
           get().pushActionQueue(['callApi', 'preSaleTalk']);
-
-          setTimeout(() => {
-            get().pushActionQueue([
-              'preSaleHandOverSolutionArchitect',
-              'solutionArchitectTalk',
-            ]);
-          }, 10000);
         }
       },
 
@@ -194,6 +199,15 @@ export const useAppStore = create<AppState>()(
         console.log('state', state);
       },
 
+      setFiles: (files: FileType[]) => {
+        set({ files });
+      },
+
+      addFile: (file: FileType) => {
+        const { files } = get();
+        set({ files: [...files, file] });
+      },
+
       pushActionQueue: (actions: ActionType[]) => {
         const { actionQueue } = get();
         set({ actionQueue: [...actionQueue, ...actions] });
@@ -219,10 +233,18 @@ export const useAppStore = create<AppState>()(
         console.log('action', action);
 
         if (action === 'callApi') {
-          setTimeout(() => {
-            set({ processingState: null });
-            get().handleAction();
-          }, 1000);
+          axios
+            .post('/api/solution', {
+              user_requirements: get().currentMessage,
+            })
+            .then((res) => {
+              console.log('callApi response', res);
+            })
+            .finally(() => {
+              set({ currentMessage: '' });
+              set({ processingState: null });
+              get().handleAction();
+            });
         }
 
         if (
@@ -247,48 +269,89 @@ export const useAppStore = create<AppState>()(
             get().handleAction();
           }, getMessageDelay(actionTypeDetail[action].description));
         }
+
+        if (action === 'preSaleShowUserRequirements') {
+          get().addFile('user_requirements');
+          set({ processingState: null, selectedFile: 'user_requirements.md' });
+          get().handleAction();
+        }
+
+        if (action === 'solutionArchitectShowSolution') {
+          get().addFile('solution_architect_report');
+          set({
+            processingState: null,
+            selectedFile: 'solution_architect_report.md',
+          });
+          get().handleAction();
+        }
+
+        if (action === 'projectManagerShowPlan') {
+          get().addFile('project_manager_report');
+          set({
+            processingState: null,
+            selectedFile: 'project_manager_report.md',
+          });
+          get().handleAction();
+        }
+
+        if (action === 'saleShowQuote') {
+          get().addFile('sale_report');
+          set({ processingState: null, selectedFile: 'sale_report.md' });
+          get().handleAction();
+        }
+
+        if (action === 'documentManagerShowProposal') {
+          get().addFile('final_proposal');
+          set({ processingState: null, selectedFile: 'final_proposal.md' });
+          get().handleAction();
+        }
+
+        if (action === 'deliveryManagerHandOverEnd') {
+          set({ processingState: null, selectedFile: 'final_proposal.md' });
+          get().setActiveRole(null);
+        }
       },
 
       setCloudSolutionState: (state: CloudSolutionStateType) => {
         const { cloudSolutionState } = get();
-        console.log('setCloudSolutionState test', state, cloudSolutionState);
+        // console.log('setCloudSolutionState test', state, cloudSolutionState);
         if (state.next === cloudSolutionState.next) {
           return;
         }
 
-        if (state.next === 'Pre-Sale') {
-          if (state.folder_path === '') {
-            get().pushActionQueue(['callApi', 'preSaleTalk']);
-          }
-        } else if (state.next === 'create_project_folder') {
+        // if (state.next === 'Pre-Sale') {
+        //   if (state.folder_path === '') {
+        //     get().pushActionQueue(['callApi', 'preSaleTalk']);
+        //   }
+        // } else
+        if (state.next === 'create_project_folder') {
         } else if (state.next === 'Solution-Architect') {
           get().pushActionQueue([
-            // 'preSaleShowUserRequirements',
+            'preSaleShowUserRequirements',
             'preSaleHandOverSolutionArchitect',
             'solutionArchitectTalk',
           ]);
         } else if (state.next === 'Project-Manager') {
           get().pushActionQueue([
-            // 'solutionArchitectShowSolution',
+            'solutionArchitectShowSolution',
             'solutionArchitectHandOverProjectManager',
             'projectManagerTalk',
           ]);
         } else if (state.next === 'Sale') {
           get().pushActionQueue([
-            // 'projectManagerShowPlan',
+            'projectManagerShowPlan',
             'projectManagerHandOverSale',
             'saleTalk',
           ]);
         } else if (state.next === 'Document-Manager') {
           get().pushActionQueue([
-            // 'saleShowQuote',
-
+            'saleShowQuote',
             'saleHandOverDocumentManager',
             'documentManagerTalk',
           ]);
         } else if (state.next === 'Delivery-Manager') {
           get().pushActionQueue([
-            // 'documentManagerShowProposal',
+            'documentManagerShowProposal',
             'documentManagerHandOverDeliveryManager',
             'deliveryManagerTalk',
           ]);

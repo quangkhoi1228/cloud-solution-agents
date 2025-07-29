@@ -16,6 +16,7 @@ export function ChatSidebar() {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
@@ -48,6 +49,11 @@ export function ChatSidebar() {
     adjustTextareaHeight();
   }, [currentMessage]);
 
+  useEffect(() => {
+    console.log('messages', messages);
+    scrollAreaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages]);
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -62,7 +68,7 @@ export function ChatSidebar() {
   return (
     <div
       ref={containerRef}
-      className='w-80 bg-gray-800 border-r border-gray-700 flex flex-col h-full'
+      className='w-80 min-w-80 bg-gray-800 border-r border-gray-700 flex flex-col h-full'
     >
       {/* <div className="p-4 border-b border-gray-700 flex-shrink-0">
         <div className="flex items-center gap-2 mb-4">
@@ -77,7 +83,7 @@ export function ChatSidebar() {
       </div> */}
 
       <ScrollArea className='flex-1 min-h-0'>
-        <div className='p-4 space-y-4'>
+        <div className='p-4 space-y-4 pb-40' ref={scrollAreaRef}>
           {messages.map((msg) => (
             <div
               key={msg.id}

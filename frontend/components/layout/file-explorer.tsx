@@ -1,17 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAppStore } from '@/stores/app-store';
 import {
   ChevronDown,
   ChevronRight,
   File,
   Folder,
   FolderOpen,
-  MoreHorizontal,
 } from 'lucide-react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAppStore } from '@/stores/app-store';
+import { useState } from 'react';
 
 interface FileNode {
   name: string;
@@ -21,9 +19,9 @@ interface FileNode {
 }
 
 export function FileExplorer() {
-  const { selectedFile, setSelectedFile, cloudSolutionState } = useAppStore();
+  const { selectedFile, setSelectedFile, files } = useAppStore();
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set(['shadcn-ui', 'src'])
+    new Set(['project_folder'])
   );
 
   const toggleFolder = (path: string) => {
@@ -36,26 +34,23 @@ export function FileExplorer() {
     setExpandedFolders(newExpanded);
   };
 
-  const fileStructure: FileNode[] = [];
+  const getFileIcon = (fileName: string) => {
+    if (fileName.endsWith('.md')) return '📝';
+    if (fileName.endsWith('.tsx') || fileName.endsWith('.ts')) return '⚛️';
+    if (fileName.endsWith('.json')) return '📋';
+    if (fileName.endsWith('.css')) return '🎨';
+    if (fileName.endsWith('.js')) return '📜';
+    if (fileName.endsWith('.html')) return '🌐';
+    return '📄';
+  };
 
-  if (cloudSolutionState.user_requirements) {
-    fileStructure.push({ name: 'user_requirements.md', type: 'file' });
-  }
-  if (cloudSolutionState.solution_architect_report) {
-    fileStructure.push({ name: 'solution_architect_report.md', type: 'file' });
-  }
-  if (cloudSolutionState.project_manager_report) {
-    fileStructure.push({ name: 'project_manager_report.md', type: 'file' });
-  }
-  if (cloudSolutionState.sale_report) {
-    fileStructure.push({ name: 'sale_report.md', type: 'file' });
-  }
-  if (cloudSolutionState.delivery_manager_report) {
-    fileStructure.push({ name: 'delivery_manager_report.md', type: 'file' });
-  }
-  if (cloudSolutionState.final_proposal) {
-    fileStructure.push({ name: 'final_proposal.md', type: 'file' });
-  }
+  const fileStructure: FileNode[] = [
+    { name: 'README.md', type: 'file' },
+  ];
+
+  files.forEach((file) => {
+    fileStructure.push({ name: `${file}.md`, type: 'file' });
+  });
 
   const renderFileTree = (nodes: FileNode[], depth = 0, parentPath = '') => {
     return nodes.map((node) => {
@@ -93,6 +88,8 @@ export function FileExplorer() {
             ) : (
               <>
                 {/* <div className='w-4' /> */}
+                <span className='text-sm mr-1'>{getFileIcon(node.name)}</span>
+
                 <File className='w-4 h-4 text-gray-400' />
               </>
             )}
@@ -107,7 +104,7 @@ export function FileExplorer() {
   };
 
   return (
-    <div className='w-64 bg-gray-850 border-r border-gray-700 flex flex-col'>
+    <div className='w-64 min-w-64 bg-gray-850 border-r border-gray-700 flex flex-col'>
       <div className='h-[49px] flex items-center  p-3 border-b border-gray-700'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
@@ -138,8 +135,6 @@ export function FileExplorer() {
 
       <div className='p-2 border-t border-gray-700'>
         <div className='text-xs text-gray-400 flex items-center gap-2'>
-          <span>shadcn-ui</span>
-          <span>/</span>
           <span>src</span>
           <span>/</span>
           <span className='text-white'>{selectedFile}</span>
