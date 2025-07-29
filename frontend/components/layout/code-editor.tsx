@@ -52,11 +52,6 @@ export function CodeEditor() {
         <div className='flex items-center gap-2 text-sm'>
           <File className='w-4 h-4 text-blue-400' />
           <span>{selectedFile}</span>
-          {isMarkdownFile && (
-            <span className='text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded'>
-              markdown
-            </span>
-          )}
         </div>
         <div className='flex items-center gap-2'>
           <Button variant='ghost' size='sm'>
@@ -79,12 +74,8 @@ export function CodeEditor() {
               }
             `}
           >
-            {isMarkdownFile ? (
-              <Edit className='w-3 h-3' />
-            ) : (
-              <Code className='w-3 h-3' />
-            )}
-            {isMarkdownFile ? 'Edit' : 'Raw'}
+            <Code className='w-3 h-3' />
+            Raw
           </button>
           <button
             onClick={() => setEditorTab('preview')}
