@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { CloudSolutionStateType } from './types/cloud-solution-state-type';
 import axios from 'axios';
+import { roles } from '@/components/layout/role-selector';
 
 interface Message {
   id: number;
@@ -53,6 +54,7 @@ interface AppState {
   selectedFile: string;
   editorTab: 'preview' | 'raw';
   processingState: ActionType | null;
+  delayTime: number;
 
   cloudSolutionState: CloudSolutionStateType;
   actionQueue: ActionType[];
@@ -98,6 +100,7 @@ export const useAppStore = create<AppState>()(
       messages: [],
       currentMessage: '',
       processingState: null,
+      delayTime: 500,
       cloudSolutionState: {
         messages: [],
         next: '',
@@ -132,11 +135,13 @@ export const useAppStore = create<AppState>()(
           hour12: true,
         });
 
+        const roleInfo = roles.find((r) => r.id === role);
+
         get().addMessage({
           type: 'system',
           content: message,
           timestamp,
-          avatar: role,
+          avatar: roleInfo?.avatar || '/avatar/avatar1.jpg',
           name: role,
           role: role,
         });
@@ -164,7 +169,7 @@ export const useAppStore = create<AppState>()(
             type: 'user',
             content: currentMessage,
             timestamp,
-            avatar: 'U',
+            avatar: '/avatar/avatar1.jpg',
             name: 'You',
           });
 
@@ -225,6 +230,7 @@ export const useAppStore = create<AppState>()(
         if (actionQueue.length <= 0 || processingState) {
           return;
         }
+
         const action = actionQueue.shift();
         if (!action) {
           return;
@@ -242,8 +248,10 @@ export const useAppStore = create<AppState>()(
             })
             .finally(() => {
               set({ currentMessage: '' });
-              set({ processingState: null });
-              get().handleAction();
+              setTimeout(() => {
+                set({ processingState: null });
+                get().handleAction();
+              }, 1000);
             });
         }
 
@@ -267,48 +275,82 @@ export const useAppStore = create<AppState>()(
           setTimeout(() => {
             set({ processingState: null });
             get().handleAction();
-          }, getMessageDelay(actionTypeDetail[action].description));
+          }, getMessageDelay(actionTypeDetail[action].description) + get().delayTime);
         }
 
         if (action === 'preSaleShowUserRequirements') {
           get().addFile('user_requirements');
-          set({ processingState: null, selectedFile: 'user_requirements.md' });
-          get().handleAction();
+          set({
+            selectedFile: 'user_requirements.md',
+          });
+          setTimeout(() => {
+            set({
+              processingState: null,
+            });
+            get().handleAction();
+          }, 3000 + get().delayTime);
         }
 
         if (action === 'solutionArchitectShowSolution') {
           get().addFile('solution_architect_report');
           set({
-            processingState: null,
             selectedFile: 'solution_architect_report.md',
           });
-          get().handleAction();
+          setTimeout(() => {
+            set({
+              processingState: null,
+            });
+            get().handleAction();
+          }, 3000 + get().delayTime);
         }
 
         if (action === 'projectManagerShowPlan') {
           get().addFile('project_manager_report');
           set({
-            processingState: null,
             selectedFile: 'project_manager_report.md',
           });
-          get().handleAction();
+
+          setTimeout(() => {
+            set({
+              processingState: null,
+            });
+            get().handleAction();
+          }, 3000 + get().delayTime);
         }
 
         if (action === 'saleShowQuote') {
           get().addFile('sale_report');
-          set({ processingState: null, selectedFile: 'sale_report.md' });
-          get().handleAction();
+          set({
+            selectedFile: 'sale_report.md',
+          });
+          setTimeout(() => {
+            set({
+              processingState: null,
+            });
+            get().handleAction();
+          }, 3000 + get().delayTime);
         }
 
         if (action === 'documentManagerShowProposal') {
           get().addFile('final_proposal');
-          set({ processingState: null, selectedFile: 'final_proposal.md' });
-          get().handleAction();
+          set({
+            selectedFile: 'final_proposal.md',
+          });
+          setTimeout(() => {
+            set({
+              processingState: null,
+            });
+            get().handleAction();
+          }, 3000 + get().delayTime);
         }
 
         if (action === 'deliveryManagerHandOverEnd') {
-          set({ processingState: null, selectedFile: 'final_proposal.md' });
-          get().setActiveRole(null);
+          setTimeout(() => {
+            set({
+              processingState: null,
+            });
+            get().setActiveRole(null);
+          }, 3000 + get().delayTime);
         }
       },
 
@@ -391,7 +433,7 @@ const actionTypeDetail: {
   solutionArchitectTalk: {
     title: 'Solution Architect Talk',
     description:
-      'Xin chào! Tôi là Solution Architect, tôi sẽ tiếp tục làm rõ kiến trúc giải pháp. Tôi sẽ lên giải pháp đề xuất, phương án chuyển đổi và sizing các thần phần cần thiết (BoM),...',
+      'Xin chào! Tôi là Solution Architect, tôi sẽ tiếp tục làm rõ kiến trúc giải pháp. Tôi sẽ lên giải pháp đề xuất, phương án chuyển đổi và sizing các thành phần cần thiết (BoM),...',
     activeRole: 'Solution-Architect',
   },
   solutionArchitectHandOverProjectManager: {

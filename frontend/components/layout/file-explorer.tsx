@@ -34,19 +34,7 @@ export function FileExplorer() {
     setExpandedFolders(newExpanded);
   };
 
-  const getFileIcon = (fileName: string) => {
-    if (fileName.endsWith('.md')) return '📝';
-    if (fileName.endsWith('.tsx') || fileName.endsWith('.ts')) return '⚛️';
-    if (fileName.endsWith('.json')) return '📋';
-    if (fileName.endsWith('.css')) return '🎨';
-    if (fileName.endsWith('.js')) return '📜';
-    if (fileName.endsWith('.html')) return '🌐';
-    return '📄';
-  };
-
-  const fileStructure: FileNode[] = [
-    { name: 'README.md', type: 'file' },
-  ];
+  const fileStructure: FileNode[] = [{ name: 'README.md', type: 'file' }];
 
   files.forEach((file) => {
     fileStructure.push({ name: `${file}.md`, type: 'file' });
@@ -87,9 +75,6 @@ export function FileExplorer() {
               </>
             ) : (
               <>
-                {/* <div className='w-4' /> */}
-                <span className='text-sm mr-1'>{getFileIcon(node.name)}</span>
-
                 <File className='w-4 h-4 text-gray-400' />
               </>
             )}

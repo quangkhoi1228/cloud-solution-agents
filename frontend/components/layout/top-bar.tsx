@@ -21,7 +21,7 @@ export function TopBar() {
             height={32}
             className='rounded-sm'
           />
-          <span className='text-sm font-medium'>Cloud Solution Agent</span>
+          <span className='text-sm font-medium'>Cloud Solution Agents</span>
           <Badge variant='secondary' className='text-xs'>
             Beta
           </Badge>

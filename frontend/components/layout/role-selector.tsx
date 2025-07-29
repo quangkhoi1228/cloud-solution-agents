@@ -1,75 +1,60 @@
 'use client';
 
-import type React from 'react';
-
-import {
-  Users,
-  Lightbulb,
-  ClipboardList,
-  DollarSign,
-  FileText,
-  Loader2,
-} from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useAppStore } from '@/stores/app-store';
+import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface Role {
   id: string;
   name: string;
-  icon: React.ReactNode;
   color: string;
   bgColor: string;
   avatar: string;
 }
 
-const roles: Role[] = [
+export const roles: Role[] = [
   {
     id: 'Pre-Sale',
     name: 'Pre-Sale',
-    icon: <Users className='w-3 h-3' />,
     color: 'text-blue-400',
     bgColor: 'bg-blue-500',
-    avatar: 'PS',
+    avatar: '/avatar/avatar1.jpg',
   },
   {
     id: 'Solution-Architect',
     name: 'Solution Architect',
-    icon: <Lightbulb className='w-3 h-3' />,
     color: 'text-purple-400',
     bgColor: 'bg-purple-500',
-    avatar: 'SA',
+    avatar: '/avatar/avatar3.jpg',
   },
   {
     id: 'Project-Manager',
     name: 'Project Manager',
-    icon: <ClipboardList className='w-3 h-3' />,
     color: 'text-green-400',
     bgColor: 'bg-green-500',
-    avatar: 'PM',
+    avatar: '/avatar/avatar2.jpg',
   },
   {
     id: 'Sale',
     name: 'Sale',
-    icon: <DollarSign className='w-3 h-3' />,
     color: 'text-yellow-400',
     bgColor: 'bg-yellow-500',
-    avatar: 'SL',
+    avatar: '/avatar/avatar4.jpg',
   },
   {
     id: 'Document-Manager',
     name: 'Document Manager',
-    icon: <FileText className='w-3 h-3' />,
     color: 'text-orange-400',
     bgColor: 'bg-orange-500',
-    avatar: 'DM',
+    avatar: '/avatar/avatar6.jpg',
   },
   {
     id: 'Delivery-Manager',
     name: 'Delivery Manager',
-    icon: <FileText className='w-3 h-3' />,
     color: 'text-orange-400',
     bgColor: 'bg-orange-500',
-    avatar: 'DM',
+    avatar: '/avatar/avatar5.jpg',
   },
 ];
 
@@ -95,7 +80,7 @@ export function RoleSelector() {
               onClick={() => switchRole(role.id)}
             >
               <div className='relative'>
-                <Avatar className='w-6 h-6'>
+                <Avatar className='w-8 h-8'>
                   <AvatarFallback
                     className={`${
                       isActive ? role.bgColor : 'bg-slate-300'
@@ -104,7 +89,12 @@ export function RoleSelector() {
                     {isLoading ? (
                       <Loader2 className='w-3 h-3 animate-spin' />
                     ) : (
-                      role.avatar
+                      <Image
+                        src={role.avatar}
+                        alt={role.name}
+                        width={42}
+                        height={42}
+                      />
                     )}
                   </AvatarFallback>
                 </Avatar>

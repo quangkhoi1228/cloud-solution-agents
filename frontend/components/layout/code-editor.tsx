@@ -12,13 +12,13 @@ import remarkGfm from 'remark-gfm';
 import { MermaidDiagram } from '../ui/mermaid-diagram';
 
 const readmeContent = `
-# ☁️ Cloud Solution Agent
+# ☁️ Cloud Solution Agents
 
 👋 **Xin chào!**
 
 Chào mừng bạn đến với **Cloud Solution Agent** – multi-agent system hỗ trợ bạn trong việc tư vấn, triển khai và lựa chọn giải pháp điện toán đám mây phù hợp trên FPT Smart Cloud.
 
-💬 **Vui lòng nhập thông tin yêu cầu vào ô chat** để bắt đầu trao đổi với chúng tôi.
+💬 **Vui lòng nhập thông tin yêu cầu vào ô chat** để bắt đầu nhé.
 `;
 // Initialize Mermaid with proper config
 mermaid.initialize({

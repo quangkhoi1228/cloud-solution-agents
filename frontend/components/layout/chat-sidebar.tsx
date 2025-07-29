@@ -2,13 +2,14 @@
 
 import type React from 'react';
 
-import { MessageSquare, User, Search, Send } from 'lucide-react';
+import { MessageSquare, User, Search, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRef, useEffect } from 'react';
 import { useAppStore } from '@/stores/app-store';
 import { TypeAnimation } from 'react-type-animation';
+import Image from 'next/image';
 
 export function ChatSidebar() {
   const { messages, currentMessage, setCurrentMessage, sendMessage } =
@@ -91,13 +92,20 @@ export function ChatSidebar() {
                 msg.type === 'user' ? 'flex-row-reverse' : 'flex-row'
               }`}
             >
-              <Avatar className='w-6 h-6 mt-1 flex-shrink-0'>
+              <Avatar className='w-8 h-8'>
                 <AvatarFallback
-                  className={`${
-                    msg.roleColor || 'bg-gray-600'
-                  } text-white text-xs`}
+                  className={`${'bg-slate-300'} text-white text-xs font-medium`}
                 >
-                  {msg.avatar}
+                  {msg.type !== 'user' ? (
+                    <Image
+                      src={msg.avatar}
+                      alt={msg.name}
+                      width={42}
+                      height={42}
+                    />
+                  ) : (
+                    <span className='text-blue-500 font-bold '>U</span>
+                  )}
                 </AvatarFallback>
               </Avatar>
               <div
