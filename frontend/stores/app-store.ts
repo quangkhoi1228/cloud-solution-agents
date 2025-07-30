@@ -58,6 +58,17 @@ interface AppState {
 
   cloudSolutionState: CloudSolutionStateType;
   actionQueue: ActionType[];
+  revealSettings: {
+    enabled: boolean;
+    duration: number;
+    autoStart: boolean;
+  };
+
+  setRevealSettings: (settings: {
+    enabled: boolean;
+    duration: number;
+    autoStart: boolean;
+  }) => void;
 
   // Chat State
   messages: Message[];
@@ -68,7 +79,7 @@ interface AppState {
   setShowFileExplorer: (show: boolean) => void;
   setActiveRole: (roleId: string | null) => void;
   setLoadingRole: (roleId: string | null) => void;
-  setSelectedFile: (fileName: string) => void;
+  setSelectedFile: (fileName: string, timeout?: number) => void;
   setEditorTab: (tab: 'preview' | 'raw') => void;
   setCurrentMessage: (message: string) => void;
   addMessage: (message: Omit<Message, 'id'>) => void;
@@ -115,12 +126,26 @@ export const useAppStore = create<AppState>()(
         final_acceptance: false,
       },
       actionQueue: [],
+      revealSettings: {
+        enabled: true,
+        duration: 10,
+        autoStart: true,
+      },
       // UI Actions
       setShowChat: (show) => set({ showChat: show }),
       setShowFileExplorer: (show) => set({ showFileExplorer: show }),
       setActiveRole: (roleId) => set({ activeRole: roleId }),
       setLoadingRole: (roleId) => set({ loadingRole: roleId }),
-      setSelectedFile: (fileName) => set({ selectedFile: fileName }),
+      setSelectedFile: (fileName, timeout = 4) => {
+        set({
+          selectedFile: fileName,
+          revealSettings: {
+            enabled: true,
+            duration: timeout,
+            autoStart: true,
+          },
+        });
+      },
       setEditorTab: (tab) => set({ editorTab: tab }),
 
       // Chat Actions
@@ -173,7 +198,6 @@ export const useAppStore = create<AppState>()(
             name: 'You',
           });
 
-          // set({ currentMessage: '' });
           get().pushActionQueue(['callApi', 'preSaleTalk']);
         }
       },
@@ -275,73 +299,63 @@ export const useAppStore = create<AppState>()(
           setTimeout(() => {
             set({ processingState: null });
             get().handleAction();
-          }, getMessageDelay(actionTypeDetail[action].description) + get().delayTime);
+          }, getMessageDelay(actionTypeDetail[action].description));
         }
 
         if (action === 'preSaleShowUserRequirements') {
           get().addFile('user_requirements');
-          set({
-            selectedFile: 'user_requirements.md',
-          });
+          get().setSelectedFile('user_requirements.md', 4);
           setTimeout(() => {
             set({
               processingState: null,
             });
             get().handleAction();
-          }, 3000 + get().delayTime);
+          }, 4000 + get().delayTime);
         }
 
         if (action === 'solutionArchitectShowSolution') {
           get().addFile('solution_architect_report');
-          set({
-            selectedFile: 'solution_architect_report.md',
-          });
+          get().setSelectedFile('solution_architect_report.md', 8);
           setTimeout(() => {
             set({
               processingState: null,
             });
             get().handleAction();
-          }, 3000 + get().delayTime);
+          }, 8000 + get().delayTime);
         }
 
         if (action === 'projectManagerShowPlan') {
           get().addFile('project_manager_report');
-          set({
-            selectedFile: 'project_manager_report.md',
-          });
+          get().setSelectedFile('project_manager_report.md', 4);
 
           setTimeout(() => {
             set({
               processingState: null,
             });
             get().handleAction();
-          }, 3000 + get().delayTime);
+          }, 4000 + get().delayTime);
         }
 
         if (action === 'saleShowQuote') {
           get().addFile('sale_report');
-          set({
-            selectedFile: 'sale_report.md',
-          });
+          get().setSelectedFile('sale_report.md', 4);
           setTimeout(() => {
             set({
               processingState: null,
             });
             get().handleAction();
-          }, 3000 + get().delayTime);
+          }, 4000 + get().delayTime);
         }
 
         if (action === 'documentManagerShowProposal') {
           get().addFile('final_proposal');
-          set({
-            selectedFile: 'final_proposal.md',
-          });
+          get().setSelectedFile('final_proposal.md', 20);
           setTimeout(() => {
             set({
               processingState: null,
             });
             get().handleAction();
-          }, 3000 + get().delayTime);
+          }, 20000 + get().delayTime);
         }
 
         if (action === 'deliveryManagerHandOverEnd') {
@@ -350,7 +364,7 @@ export const useAppStore = create<AppState>()(
               processingState: null,
             });
             get().setActiveRole(null);
-          }, 3000 + get().delayTime);
+          }, 4000 + get().delayTime);
         }
       },
 

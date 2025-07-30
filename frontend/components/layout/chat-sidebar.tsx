@@ -84,7 +84,7 @@ export function ChatSidebar() {
       </div> */}
 
       <ScrollArea className='flex-1 min-h-0'>
-        <div className='p-4 space-y-4 pb-40' ref={scrollAreaRef}>
+        <div className='p-4 space-y-4 pb-52' ref={scrollAreaRef}>
           {messages.map((msg) => (
             <div
               key={msg.id}

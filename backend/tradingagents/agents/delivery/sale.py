@@ -72,7 +72,8 @@ OUTPUT:
 
 ## Tổng chi phí dự kiến / tháng (chưa gồm VAT):
 **3.150.000 VND**
-_Lưu ý:_
+
+**_Lưu ý:_**
 - Đơn giá ở đây là giá giả định, có thể thay đổi tùy theo chương trình khuyến mãi hoặc cam kết sử dụng.
 - Một số dịch vụ như monitoring/logging có gói miễn phí, nhưng nên tư vấn khách hàng nâng cấp khi hệ thống mở rộng.
 
