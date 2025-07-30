@@ -8,8 +8,8 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
-import ContentRevealPreview from '../ui/content-reveal-preview';
 import { MermaidDiagram } from '../ui/mermaid-diagram';
+import ContentRevealPreview from '../ui/content-reveal-preview';
 
 const readmeContent = `# ☁️ Cloud Solution Agents
 
@@ -33,101 +33,7 @@ Chào mừng bạn đến với **Cloud Solution Agent** – multi-agent system 
 - Chatbot thông minh
 - Knowledge base đầy đủ
 - Escalation tự động
-
-## 📊 Kiến trúc hệ thống
-
-\`\`\`mermaid
-graph TD
-    A[User Request] --> B[Agent Router]
-    B --> C[Solution Agent]
-    B --> D[Deployment Agent]
-    B --> E[Support Agent]
-    
-    C --> F[FPT Smart Cloud]
-    D --> F
-    E --> F
-    
-    F --> G[Resources]
-    F --> H[Monitoring]
-    F --> I[Billing]
-\`\`\`
-
-## 🛠️ Công nghệ sử dụng
-
-| Component | Technology | Version |
-|-----------|------------|---------|
-| Frontend | React + TypeScript | 18.x |
-| Backend | Node.js + Express | 20.x |
-| Database | PostgreSQL | 15.x |
-| AI/ML | OpenAI GPT-4 | Latest |
-| Cloud | FPT Smart Cloud | - |
-
-## 📝 Hướng dẫn sử dụng
-
-### Bước 1: Khởi tạo
-\`\`\`bash
-npm install
-npm run dev
-\`\`\`
-
-### Bước 2: Cấu hình
-\`\`\`javascript
-const config = {
-  apiKey: 'your-api-key',
-  cloudEndpoint: 'https://api.fptcloud.com',
-  region: 'hcm-01'
-};
-\`\`\`
-
-### Bước 3: Sử dụng
-💬 **Vui lòng nhập thông tin yêu cầu vào ô chat** để bắt đầu nhé.
-
-## 🎯 Ví dụ sử dụng
-
-> **Khách hàng**: "Tôi cần triển khai một website e-commerce có thể chịu được 10,000 concurrent users"
-
-**Agent sẽ phân tích và đề xuất:**
-- Load Balancer + Auto Scaling Group
-- Container orchestration với Kubernetes
-- Database cluster với read replicas
-- CDN cho static assets
-- Monitoring và logging solution
-
-## 📈 Metrics & KPIs
-
-- **Response Time**: < 2 seconds
-- **Uptime**: 99.9%
-- **Customer Satisfaction**: 4.8/5
-- **Cost Optimization**: 30% average savings
-
-## 🔧 Troubleshooting
-
-### Lỗi thường gặp
-
-1. **Connection timeout**
-   - Kiểm tra network connectivity
-   - Verify API endpoints
-   - Check firewall rules
-
-2. **Authentication failed**
-   - Validate API keys
-   - Check token expiration
-   - Verify permissions
-
-3. **Resource limits exceeded**
-   - Monitor resource usage
-   - Scale up if needed
-   - Optimize queries
-
-## 📞 Liên hệ hỗ trợ
-
-- **Email**: support@fptcloud.com
-- **Hotline**: 1900-xxxx
-- **Chat**: Available 24/7
-
----
-
-*Cảm ơn bạn đã sử dụng Cloud Solution Agent! 🙏*`;
+`;
 
 // Initialize Mermaid with proper config
 mermaid.initialize({
@@ -162,12 +68,12 @@ export function CodeEditor() {
     if (previousFileRef.current !== selectedFile && editorTab === 'preview') {
       // Enable reveal for new file
       setLocalRevealEnabled(true);
-      
+
       // Disable reveal after animation completes
       const timer = setTimeout(() => {
         setLocalRevealEnabled(false);
       }, 5000); // 5 seconds for reveal animation
-      
+
       return () => clearTimeout(timer);
     }
     previousFileRef.current = selectedFile;

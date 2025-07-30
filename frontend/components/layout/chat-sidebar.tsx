@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { MessageSquare, User, Search, Send, Loader2 } from 'lucide-react';
+import { MessageSquare, User, Search, Send, Loader2, Bot, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -85,76 +85,124 @@ export function ChatSidebar() {
 
       <ScrollArea className='flex-1 min-h-0'>
         <div className='p-4 space-y-4 pb-52' ref={scrollAreaRef}>
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex gap-3 ${
-                msg.type === 'user' ? 'flex-row-reverse' : 'flex-row'
-              }`}
-            >
-              <Avatar className='w-8 h-8'>
-                <AvatarFallback
-                  className={`${'bg-slate-300'} text-white text-xs font-medium`}
-                >
-                  {msg.type !== 'user' ? (
-                    <Image
-                      src={msg.avatar}
-                      alt={msg.name}
-                      width={42}
-                      height={42}
-                    />
-                  ) : (
-                    <span className='text-blue-500 font-bold '>U</span>
-                  )}
-                </AvatarFallback>
-              </Avatar>
-              <div
-                className={`flex-1 ${
-                  msg.type === 'user' ? 'text-right' : 'text-left'
-                }`}
-              >
-                <div className='text-xs text-gray-400 mb-1 '>
-                  {/* {msg.name} {msg.role && `• ${msg.role}`} • {msg.timestamp} */}
-                  {msg.name} • {msg.timestamp}
+          {messages.length === 0 ? (
+            <div className='flex flex-col items-center justify-center h-full min-h-[400px] text-center'>
+              <div className='mb-6'>
+                <div className='w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4 mx-auto'>
+                  <Bot className='w-8 h-8 text-white' />
                 </div>
-                <div
-                  className={`
-                  rounded-lg p-3 text-sm max-w-[85%] inline-block
-                  ${
-                    msg.type === 'user'
-                      ? 'bg-blue-600 text-white ml-auto'
-                      : 'bg-gray-700 text-gray-300'
-                  }
-                `}
-                >
-                  {msg.role && msg.type === 'system' && (
-                    <div className='flex items-center gap-2 mb-2'>
-                      <MessageSquare className='w-4 h-4 text-blue-400' />
-                      <span className='text-blue-400 font-medium'>
-                        {msg.role}
-                      </span>
-                    </div>
-                  )}
-                  <div className='leading-relaxed text-left'>
-                    {msg.type === 'system' ? (
-                      <TypeAnimation
-                        sequence={[
-                          // Same substring at the start will only be typed once, initially
-                          msg.content,
-                          msg.content.length * 80,
-                        ]}
-                        cursor={false}
-                        speed={50}
-                        repeat={0}
-                      />
-                    ) : (
-                      <p>{msg.content}</p>
-                    )}
+                <h3 className='text-lg font-semibold text-white mb-2'>
+                  Chào mừng đến với <br /> Cloud Solution Agent
+                </h3>
+                <p className='text-gray-400 text-sm max-w-xs'>
+                  Tôi có thể giúp bạn tạo và quản lý các giải pháp cloud một cách hiệu quả
+                </p>
+              </div>
+              
+              <div className='space-y-3 w-full max-w-sm'>
+                <div className='text-xs text-gray-500 mb-4'>Bạn có thể hỏi tôi về:</div>
+                
+                <div className='flex items-center gap-3 p-3 bg-gray-700/50 rounded-lg border border-gray-600/50 hover:bg-gray-700/70 transition-colors cursor-pointer'>
+                  <div className='w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center'>
+                    <Sparkles className='w-4 h-4 text-blue-400' />
+                  </div>
+                  <div className='text-left'>
+                    <div className='text-sm font-medium text-white'>Tạo giải pháp cloud</div>
+                    <div className='text-xs text-gray-400'>Kiến trúc và triển khai</div>
+                  </div>
+                </div>
+                
+                <div className='flex items-center gap-3 p-3 bg-gray-700/50 rounded-lg border border-gray-600/50 hover:bg-gray-700/70 transition-colors cursor-pointer'>
+                  <div className='w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center'>
+                    <MessageSquare className='w-4 h-4 text-green-400' />
+                  </div>
+                  <div className='text-left'>
+                    <div className='text-sm font-medium text-white'>Tư vấn kỹ thuật</div>
+                    <div className='text-xs text-gray-400'>Hỏi đáp về cloud</div>
+                  </div>
+                </div>
+                
+                <div className='flex items-center gap-3 p-3 bg-gray-700/50 rounded-lg border border-gray-600/50 hover:bg-gray-700/70 transition-colors cursor-pointer'>
+                  <div className='w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center'>
+                    <User className='w-4 h-4 text-purple-400' />
+                  </div>
+                  <div className='text-left'>
+                    <div className='text-sm font-medium text-white'>Quản lý dự án</div>
+                    <div className='text-xs text-gray-400'>Lập kế hoạch và theo dõi</div>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          ) : (
+            messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex gap-3 ${
+                  msg.type === 'user' ? 'flex-row-reverse' : 'flex-row'
+                }`}
+              >
+                <Avatar className='w-8 h-8'>
+                  <AvatarFallback
+                    className={`${'bg-slate-300'} text-white text-xs font-medium`}
+                  >
+                    {msg.type !== 'user' ? (
+                      <Image
+                        src={msg.avatar}
+                        alt={msg.name}
+                        width={42}
+                        height={42}
+                      />
+                    ) : (
+                      <span className='text-blue-500 font-bold '>U</span>
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+                <div
+                  className={`flex-1 ${
+                    msg.type === 'user' ? 'text-right' : 'text-left'
+                  }`}
+                >
+                  <div className='text-xs text-gray-400 mb-1 '>
+                    {msg.name} • {msg.timestamp}
+                  </div>
+                  <div
+                    className={`
+                    rounded-lg p-3 text-sm max-w-[85%] inline-block
+                    ${
+                      msg.type === 'user'
+                        ? 'bg-blue-600 text-white ml-auto'
+                        : 'bg-gray-700 text-gray-300'
+                    }
+                  `}
+                  >
+                    {msg.role && msg.type === 'system' && (
+                      <div className='flex items-center gap-2 mb-2'>
+                        <MessageSquare className='w-4 h-4 text-blue-400' />
+                        <span className='text-blue-400 font-medium'>
+                          {msg.role}
+                        </span>
+                      </div>
+                    )}
+                    <div className='leading-relaxed text-left'>
+                      {msg.type === 'system' ? (
+                        <TypeAnimation
+                          sequence={[
+                            msg.content,
+                            msg.content.length * 80,
+                          ]}
+                          cursor={false}
+                          speed={50}
+                          repeat={0}
+                        />
+                      ) : (
+                        <p>{msg.content}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </ScrollArea>
 

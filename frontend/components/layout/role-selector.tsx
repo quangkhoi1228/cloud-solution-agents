@@ -73,7 +73,7 @@ export function RoleSelector() {
             <div
               key={role.id}
               className={`
-                group flex w-56 items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer 
+                group flex w-48 items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer 
                 transition-all duration-500 ease-out border relative overflow-hidden
                 ${isActive 
                   ? 'bg-gradient-to-r from-gray-700 to-gray-600 shadow-lg shadow-gray-900/50 border-gray-500 scale-105' 
